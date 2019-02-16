@@ -19,6 +19,9 @@
   },
   "homepage": "https://github.com/ashu326/eCommerce#readme",
   "dependencies": {
-    "nodemon": "^1.18.10"
+    "ejs": "^2.6.1",
+    "express-handlebars": "^3.0.0",
+    "nodemon": "^1.18.10",
+    "pug": "^2.0.3"
   }
 }
