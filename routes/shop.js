@@ -8,9 +8,15 @@ const rootDir = require('../util/path') ;
 const adminData = require('./admin') ;
 
 router.get('/', (req, res) => {
-    console.log('shopjs', adminData.products) ;
     const products = adminData.products
-    res.render('shop', {prods: products, Title: 'Shop'}) ;
+    res.render('shop', {
+        prods: products, 
+        Title: 'Shop',
+        path: '/',
+        formsCSS: true,
+        productCSS: true,
+        acticeAddProduct: true
+    }) ;
     //res.sendFile(path.join(rootDir, 'views', 'shop.html'));
 });
 
