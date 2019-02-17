@@ -1,7 +1,7 @@
 const products = []
 
 exports.getAddProductsPage = (req, res) => {
-    res.render('product', {
+    res.render('admin/add-product', {
         pageTitle: "Add Product", 
         path: "/add-product",
         formsCSS: true,
@@ -16,10 +16,21 @@ exports.postAddProductsPage = (req, res) => {
 }
 
 exports.getShopProducts = (req, res) => {
-    res.render('shop', {
+    res.render('shop/product-list', {
         prods: products, 
-        Title: 'Shop',
+        pageTitle: 'Shop',
         path: '/',
+        formsCSS: true,
+        productCSS: true,
+        acticeAddProduct: true
+    }) ;
+}
+
+exports.getCart = (req, res) => {
+    res.render('shop/cart', {
+        prods: products, 
+        pageTitle: 'Cart',
+        path: '/cart',
         formsCSS: true,
         productCSS: true,
         acticeAddProduct: true
