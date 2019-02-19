@@ -18,8 +18,9 @@ app.use(express.static(path.join(__dirname, 'public'))) ;
 
 app.use(adminRoutes) ;
 app.use(homeRoutes) ;
+//app.use(cartController.getCart);
 
-app.use(errorControllers.get404Page) ;
+app.use(errorControllers.get404Page) ; 
 
 const port = process.env.PORT || 3000
 app.listen(port, () =>
