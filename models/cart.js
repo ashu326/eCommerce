@@ -31,7 +31,7 @@ module.exports = class Cart {
         updatedProduct = { id: id, qty: 1 };
         cart.products = [...cart.products, updatedProduct];
       }
-      cart.totalPrice = cart.totalPrice + +productPrice;
+      cart.totalPrice = cart.totalPrice + +productPrice; // + sign is used to convert string to num
       fs.writeFile(p, JSON.stringify(cart), err => {
         console.log(err);
       });
