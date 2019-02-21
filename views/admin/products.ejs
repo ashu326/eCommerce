@@ -18,11 +18,11 @@
                         </div>
                         <div class="card__content">
                             <h2 class="product__price">$<%= product.price %></h2>
-                            <p class="product__description"><%= product.title %></p>
+                            <p class="product__description"><%= product.description %></p>
                         </div>
                         <div class="card__actions">
-                            <a href="/admin/edit-products" class="button">Edit</a>
-                            <form action="/admin/delete-product" method="POST"></form>
+                            <a href="/edit-product/<%= product.id %>?edit=true" class="btn">Edit</a>
+                            <form action="/delete-product" method="POST"></form>
                                 <button class="btn">Delete</button>
                         </div>
                     </article>
