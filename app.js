@@ -3,6 +3,7 @@ const express = require('express') ;
 const http = require('http') ;
 
 const app = express() ;
+const db = require('./util/database');
 
 app.set('view engine', 'ejs') ;
 app.set('views', 'views') ;

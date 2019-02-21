@@ -2,27 +2,31 @@ const Product = require('../models/product');
 const Cart = require('../models/cart');
 
 exports.getShopProducts = (req, res) => {
-    Product.fetchAll(products => {
-        res.render('shop/product-list', {
-            prods: products, 
-            pageTitle: 'Shop',
-            path: '/products',
-            formsCSS: true,
-            productCSS: true,
-            acticeAddProduct: true
-        });
-    });
+    Product.fetchAll()
+        .then(([rows, fieldDtat]) => {
+            res.render('shop/product-list', {
+                prods: rows, 
+                pageTitle: 'Shop',
+                path: '/products',
+                formsCSS: true,
+                productCSS: true,
+                acticeAddProduct: true,
+            });
+        })
+        .catch(err => console.log(err));
 };
 
 exports.getProductId = (req, res) => {
     const prodId = req.params.productId ;
-    Product.findById(prodId, product => {
-        res.render('shop/product-detail', {
-            product: product, 
-            pageTitle: product.title,
-            path: '/products',
-    });
-    });
+    Product.findById(prodId)
+        .then(([product]) => {
+            res.render('shop/product-detail', {
+                product: product[0],
+                path: '/products',
+                pageTitle: product.title
+        });
+    })
+        .catch(err => console.log(err));
 };
 
 exports.getCart = (req, res, next) => {
@@ -55,13 +59,15 @@ exports.postCart = (req, res, next) => {
   };
 
 exports.getIndex = (req, res) => {
-    Product.fetchAll(products => {
-        res.render('shop/index', {
-        prods: products, 
-        pageTitle: 'Home',
-        path: '/',
-    }) ;
-});
+    Product.fetchAll()
+        .then(([rows, fieldData]) => {
+            res.render('shop/index', {
+                prods: rows, 
+                pageTitle: 'Home',
+                path: '/',
+            });
+        })
+    .catch(err => console.log(err));
 };
 
 exports.getCheckout = (req, res) => {
