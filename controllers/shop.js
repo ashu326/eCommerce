@@ -25,18 +25,26 @@ exports.getProductId = (req, res) => {
     });
 };
 
-exports.getCart = (req, res) => {
-    Product.fetchAll(products => {
+exports.getCart = (req, res, next) => {
+    Cart.getCart(cart => {
+      Product.fetchAll(products => {
+        const cartProducts = [];
+        for (product of products) {
+          const cartProductData = cart.products.find(
+            prod => prod.id === product.id
+          );
+          if (cartProductData) {
+            cartProducts.push({ productData: product, qty: cartProductData.qty });
+          }
+        }
         res.render('shop/cart', {
-            prods: products, 
-            pageTitle: 'Your Cart',
-            path: '/cart',
-            formsCSS: true,
-            productCSS: true,
-            acticeAddProduct: true
-        }) ;
+          path: '/cart',
+          pageTitle: 'Your Cart',
+          products: cartProducts
+        });
+      });
     });
-};
+  };
 
 exports.postCart = (req, res, next) => {
     const prodId = req.body.productId;
