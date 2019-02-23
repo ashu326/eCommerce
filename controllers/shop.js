@@ -2,31 +2,26 @@ const Product = require('../models/product');
 const Cart = require('../models/cart');
 
 exports.getShopProducts = (req, res) => {
-    Product.fetchAll()
-        .then(([rows, fieldDtat]) => {
-            res.render('shop/product-list', {
-                prods: rows, 
-                pageTitle: 'Shop',
-                path: '/products',
-                formsCSS: true,
-                productCSS: true,
-                acticeAddProduct: true,
-            });
-        })
-        .catch(err => console.log(err));
+  Product.findAll()
+      .then(products => {
+        res.render('shop/product-list', {
+          prods: products, 
+          pageTitle: 'Home',
+          path: '/products',
+      }); 
+      }).catch(err => console.log(err));
 };
 
 exports.getProductId = (req, res) => {
     const prodId = req.params.productId ;
     Product.findById(prodId)
-        .then(([product]) => {
+        .then(product => {
             res.render('shop/product-detail', {
-                product: product[0],
+                product: product,
                 path: '/products',
                 pageTitle: product.title
         });
-    })
-        .catch(err => console.log(err));
+    }).catch(err => console.log(err));
 };
 
 exports.getCart = (req, res, next) => {
@@ -59,21 +54,20 @@ exports.postCart = (req, res, next) => {
   };
 
 exports.getIndex = (req, res) => {
-    Product.fetchAll()
-        .then(([rows, fieldData]) => {
-            res.render('shop/index', {
-                prods: rows, 
-                pageTitle: 'Home',
-                path: '/',
-            });
-        })
-    .catch(err => console.log(err));
+    Product.findAll()
+      .then(products => {
+        res.render('shop/index', {
+          prods: products, 
+          pageTitle: 'Home',
+          path: '/',
+      }); 
+      }).catch(err => console.log(err));
 };
 
 exports.getCheckout = (req, res) => {
     Product.fetchAll(products => {
         res.render('shop/checkout', {
-            prods: products, 
+            prods: products,  
             pageTitle: 'Checkout',
             path: '/checkout',
         });

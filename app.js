@@ -4,6 +4,7 @@ const http = require('http') ;
 
 const app = express() ;
 const db = require('./util/database');
+const sequelize = require('./util/database');
 
 app.set('view engine', 'ejs') ;
 app.set('views', 'views') ;
@@ -23,7 +24,14 @@ app.use(homeRoutes) ;
 
 app.use(errorControllers.get404Page) ; 
 
-const port = process.env.PORT || 3000
-app.listen(port, () =>
-console.log(`Listening on port....${port}`)
+sequelize.sync()
+    .then(result => {
+        //console.log(result);
+        const port = process.env.PORT || 3000
+        app.listen(port, () =>
+        console.log(`Listening on port....${port}`)
 )
+    })
+    .catch(err => {
+        console.log(err);
+    })
