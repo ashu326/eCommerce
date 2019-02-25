@@ -11,9 +11,19 @@ app.set('views', 'views') ;
 
 const errorControllers = require('./controllers/error') ;
 const mongoConnect = require('./util/database').mongoConnect;
+const User = require('./models/user');
 
 app.use(bodyParser.urlencoded({extended: false})) ;
 app.use(express.static(path.join(__dirname, 'public'))) ;
+
+app.use((req, res, next) => {
+    User.findById('5c73becc44879c03cd3f95b5')
+        .then(user => {
+            req.user = user;
+            next();
+        })
+        .catch(err => console.log(err));
+});
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
