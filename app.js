@@ -1,37 +1,30 @@
 const path = require('path') ;
-const express = require('express') ;
 const http = require('http') ;
 
+const express = require('express') ;
+const bodyParser = require('body-parser');
+
 const app = express() ;
-const db = require('./util/database');
-const sequelize = require('./util/database');
 
 app.set('view engine', 'ejs') ;
 app.set('views', 'views') ;
 
-const bodyParser = require('body-parser') ;
-app.use(bodyParser.urlencoded({extended: false})) ;
-
-const adminRoutes = require('./routes/admin') ;
-const homeRoutes = require('./routes/shop') ;
 const errorControllers = require('./controllers/error') ;
+const mongoConnect = require('./util/database').mongoConnect;
 
+app.use(bodyParser.urlencoded({extended: false})) ;
 app.use(express.static(path.join(__dirname, 'public'))) ;
 
-app.use(adminRoutes) ;
-app.use(homeRoutes) ;
-//app.use(cartController.getCart);
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
 
-app.use(errorControllers.get404Page) ; 
+app.use(adminRoutes);
+app.use(shopRoutes);
 
-sequelize.sync()
-    .then(result => {
-        //console.log(result);
-        const port = process.env.PORT || 3000
-        app.listen(port, () =>
-        console.log(`Listening on port....${port}`)
-)
-    })
-    .catch(err => {
-        console.log(err);
-    })
+app.use(errorControllers.get404Page); 
+
+mongoConnect(client => {
+    const port = process.env.PORT || 3000
+    app.listen(port, () => console.log(client));
+    console.log(`Listening on port....${port}`)
+});
