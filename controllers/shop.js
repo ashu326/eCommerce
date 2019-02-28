@@ -52,7 +52,7 @@ exports.postCart = (req, res, next) => {
     }).then(result => {
       console.log(result);
     })
-    res.redirect('/cart');
+    res.redirect('/');
   };
 
 exports.getIndex = (req, res) => {
