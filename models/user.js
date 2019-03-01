@@ -15,11 +15,20 @@ class User{
   }
 
   addToCart(product){
-    // const cartProduct = this.cart.items.findIndex(cp => {
-    //   return cp === product._id;
-    // });
+    const cartProductIndex = this.cart.items.findIndex(cp => {
+      return cp.productId.toString() === product._id.toString();
+    });
+    let newQuantity = 1;
+    const updatedCartItems = [...this.cart.items];
     //product.quantity = 1;// this is how we can add new field in JS
-    const updatedCart = { items: [{productId: new mongodb.ObjectID(product._id), quantity: 1}]};
+    if(cartProductIndex >= 0){
+      newQuantity = this.cart.items[cartProductIndex].quantity + 1;
+      updatedCartItems[cartProductIndex].quantity = newQuantity;
+    }
+    else{
+      updatedCartItems.push({productId: new mongodb.ObjectID(product._id), quantity: newQuantity});
+    }
+    const updatedCart = { items: updatedCartItems};
     const db = getDb();
     return db.collection('users').updateOne(
       {_id: new mongodb.ObjectID(this._id)},
