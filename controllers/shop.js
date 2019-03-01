@@ -44,7 +44,16 @@ exports.postCart = (req, res, next) => {
     res.redirect('/cart');
   };
 
-exports.getIndex = (req, res) => {
+  exports.postCartDeleteProduct = (req, res) => {
+    const prodId = req.body.productId;
+    req.user.deleteItemFromCart(prodId)
+      .then(result => {
+        res.redirect('/cart');
+      })
+      .catch(err => console.log(err));
+  };
+  
+  exports.getIndex = (req, res) => {
     Product.fetchAll()
       .then(products => {
         res.render('shop/index', {
