@@ -64,6 +64,16 @@ exports.postCart = (req, res, next) => {
       }).catch(err => console.log(err));
 };
 
+exports.postOrder = (req, res) => {
+  req.user.addOrder()
+    .then(result => {
+      res.redirect('/orders');
+    })
+    .catch(err => console.log(err)
+    );
+};
+
+
 exports.getCheckout = (req, res) => {
     Product.fetchAll(products => {
         res.render('shop/checkout', {
@@ -75,11 +85,12 @@ exports.getCheckout = (req, res) => {
 };
 
 exports.getOrders = (req, res) => {
-    Product.fetchAll(products => {
+  req.user.getOrders().then(orders => {
         res.render('shop/orders', {
-            prods: products, 
             pageTitle: 'My Orders',
             path: '/orders',
+            orders: orders
         });
-    });
+    })
+    .catch(err => console.log(err));
 };
