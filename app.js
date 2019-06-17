@@ -37,7 +37,10 @@ app.use(session ({
 );
 
 app.use((req, res, next) => {
-  User.findById('5d04d5fa1ae4af0cca3125f8')
+  if (!req.session.user) {
+    return next();
+  }
+  User.findById(req.session.user._id)
     .then(user => {
       req.user = user;
       next();
@@ -52,24 +55,13 @@ app.use(authRoutes);
 app.use(errorController.get404);
 
 
-mongoose.connect(MongoDB_Url).then(result => {
-  if( User.findOne().then(user => {
-    if(!user) {
-      const user = new User({
-        name: 'Ashu',
-        email: 'ashu@gmail.com',
-        cart:{
-          items: []
-        }
-      });
-      user.save();
-    }
-  }))
-  app.listen(3000);
-})
-.catch(err => {
-  console.log(err);
-});
+mongoose.connect(MongoDB_Url)
+  .then(result => {
+    app.listen(3000);
+  })
+  .catch(err => {
+    console.log(err);
+  });
 
 // mongoConnect(() => {
 //   app.listen(3000);
