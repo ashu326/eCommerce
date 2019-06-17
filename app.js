@@ -10,6 +10,7 @@ const User = require('./models/user');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
+const flash = require('connect-flash');
 
 const MongoDB_Url = 'mongodb://localhost:27017/shop';
 
@@ -58,6 +59,8 @@ app.use((req, res, next) => {
   res.locals.csrfToken = req.csrfToken();
   next();
 })
+
+app.use(flash());
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
